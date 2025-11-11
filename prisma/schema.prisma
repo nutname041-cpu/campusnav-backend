@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  password  String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model Building {
+  id          Int        @id @default(autoincrement())
+  name        String
+  code        String?     @unique
+  type        String?
+  description String?
+  x           Float
+  y           Float
+  floors      FloorPlan[]
+  rooms       Room[]
+}
+
+model FloorPlan {
+  id         Int      @id @default(autoincrement())
+  building   Building @relation(fields: [buildingId], references: [id])
+  buildingId Int
+  level      Int
+  imageUrl   String
+}
+
+model Room {
+  id         Int      @id @default(autoincrement())
+  building   Building @relation(fields: [buildingId], references: [id])
+  buildingId Int
+  name       String
+  floor      Int
+  note       String?
+}
+
+model Route {
+  id            Int     @id @default(autoincrement())
+  startId       Int
+  endId         Int
+  polylineJson  String?
+  steps         Step[]
+}
+
+model Step {
+  id       Int   @id @default(autoincrement())
+  route    Route @relation(fields: [routeId], references: [id])
+  routeId  Int
+  index    Int
+  imageUrl String
+  caption  String?
+  dir      String?
+}
