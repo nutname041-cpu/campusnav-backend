@@ -29,25 +29,25 @@ app.use(express.json());
 // Sessions
 app.use(makeSession());
 
+// ✅ HEALTH ROUTE MUST BE BEFORE OTHER ROUTES
+app.get("/api/health", (req, res) => {
+  res.json({ ok: true });
+});
+
 // Static folder for uploaded images
 app.use("/uploads", express.static("uploads"));
 
-// Routes
+// ✅ Now load all real routes
 app.use("/api", authRoutes);
 app.use("/api", buildingRoutes);
 app.use("/api", routeRoutes);
 app.use("/api", roomRoutes);
 app.use("/api", floorPlanRoutes);
 
-
-// Health check
-app.get("/api/health", (req, res) => {
-  res.json({ ok: true });
-});
+// ✅ Remove duplicate line (you had it twice)
+/// app.use("/api/floorplans", floorPlanRoutes);
 
 const port = process.env.PORT || 5050;
 app.listen(port, () => {
   console.log(`✅ Backend running on http://localhost:${port}`);
 });
-
-app.use("/api/floorplans", floorPlanRoutes);
