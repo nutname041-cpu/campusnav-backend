@@ -30,7 +30,7 @@ app.use(express.json());
 app.use(makeSession());
 
 // ✅ HEALTH ROUTE MUST BE BEFORE OTHER ROUTES
-app.get("/api/health", (req, res) => {
+app.get("/health", (req, res) => {
   res.json({ ok: true });
 });
 
