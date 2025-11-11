@@ -20,7 +20,7 @@ const app = express();
 // CORS
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://campusnav-frontend.vercel.app",
     credentials: true
   })
 );
